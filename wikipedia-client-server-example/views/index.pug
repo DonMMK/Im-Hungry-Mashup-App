@@ -3,8 +3,8 @@ extends layout
 block content
   h1 Trending Wikipedia Articles
   //- #{JSON.stringify(articles)}
-  each article in articles
+  each shop in shops
     .item
-      button.articleTitle #{article.article.replace(/_/g," ")}
+      button.shopName #{shop.name}
   
   script(src='/javascripts/summary.js')
