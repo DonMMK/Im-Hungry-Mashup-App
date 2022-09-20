@@ -1,10 +1,9 @@
 extends layout
 block searchbar
   h1 What food/drink would you like to have today?
-  body 
-    form(action="/", method="POST")
-      input(type='text', name='search', placeholder='Search for a restaurant')
-      input(type='submit', value='Search')
+  form(action="/", method="GET")
+    input(type='text', name='search', placeholder='Search for a restaurant')
+    input(type='submit', value='Search')
 
 block content
   h2 Top Recommended Restaurants

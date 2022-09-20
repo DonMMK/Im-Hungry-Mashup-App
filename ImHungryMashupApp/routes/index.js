@@ -4,12 +4,14 @@ const axios = require("axios");
 const yelp = require('yelp-fusion');
 
 const apiKey = 'kR1ROdAbsem5zPOGEUgkl1M94Lm0SkDkUtNucQgIbpgB70FceTLSEHoztwhjiFZFA20RYrDl74Ypam4LbgOV1AET0MvLdDtWLFLn56d63sUMxw3tCnrN1MJEmpsVY3Yx';
-const shopTerm = "korean";
+var shopTerm = "korean";
 const shopLat = "-27.470125";
 const shopLong = "153.021072";
 
 /* GET home page. */
 router.get("/", function(req, res) {
+    console.log(req.query.search);
+    shopTerm = req.query.search;
     console.log("before yelp api endpoint");
     const YELP_ENDPOINT =
         // default wiki endpoint for testing
@@ -18,6 +20,7 @@ router.get("/", function(req, res) {
         `https://api.yelp.com/v3/businesses/search?term=${shopTerm}&latitude=${shopLat}&longitude=${shopLong}`;
 
     console.log("after yelp api endpoint");
+
     axios
         .get(YELP_ENDPOINT, {
             headers: {
