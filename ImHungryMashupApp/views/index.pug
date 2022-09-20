@@ -5,6 +5,12 @@ block searchbar
     input(type='text', name='search', placeholder='Search for a restaurant')
     input(type='submit', value='Search')
 
+block mylocationinput
+  h2 I'm currently at:
+  form(action="/", method="GET")
+    input(type='text', name='mylocation', placeholder='Enter your location')
+    input(type='submit', value='Search')
+
 block content
   h2 Top Recommended Restaurants
   //- #{JSON.stringify(articles)}
