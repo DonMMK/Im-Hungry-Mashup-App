@@ -1,7 +1,12 @@
 extends layout
+
+block nav
+  a(href = "/")
+    button.homeButton Home
+
 block searchbar
   h1 What food/drink would you like to have today?
-  form(action="/", method="GET")
+  form(action="/yelp", method="GET")
     input(type='text', name='search', placeholder='Search for a restaurant')
     input(type='submit', value='Search')
 
@@ -19,3 +24,4 @@ block content
       button.shopName #{shop.name}
   
   script(src='/javascripts/summary.js')
+

@@ -2,10 +2,14 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const yelp = require('yelp-fusion');
+require('dotenv').config();
+const apiKey = process.env.MY_API_KEY_1;
 
-const apiKey = 'kR1ROdAbsem5zPOGEUgkl1M94Lm0SkDkUtNucQgIbpgB70FceTLSEHoztwhjiFZFA20RYrDl74Ypam4LbgOV1AET0MvLdDtWLFLn56d63sUMxw3tCnrN1MJEmpsVY3Yx';
+//const apiKey = 'kR1ROdAbsem5zPOGEUgkl1M94Lm0SkDkUtNucQgIbpgB70FceTLSEHoztwhjiFZFA20RYrDl74Ypam4LbgOV1AET0MvLdDtWLFLn56d63sUMxw3tCnrN1MJEmpsVY3Yx';
 // Default search parameters for restaurants
 var shopTerm = "coffee";
+
+
 
 // Fixed Brisbane location
 const shopLat = "-27.470125";
