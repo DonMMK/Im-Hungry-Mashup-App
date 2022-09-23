@@ -4,16 +4,18 @@ const axios = require("axios");
 const yelp = require('yelp-fusion');
 require('dotenv').config();
 const apiKey = process.env.MY_API_KEY_1;
+const apiKey2 = process.env.MY_API_KEY_2;
 
-//const apiKey = 'kR1ROdAbsem5zPOGEUgkl1M94Lm0SkDkUtNucQgIbpgB70FceTLSEHoztwhjiFZFA20RYrDl74Ypam4LbgOV1AET0MvLdDtWLFLn56d63sUMxw3tCnrN1MJEmpsVY3Yx';
-// Default search parameters for restaurants
-var shopTerm = "coffee";
+// Default search parameters for restaurants in the area to Test
+// Test Case 1: Brisbane Coffee Shop
+// var shopTerm = "coffee";
+// const shopLat = "-27.470125";
+// const shopLong = "153.021072";
 
-
-
-// Fixed Brisbane location
-const shopLat = "-27.470125";
-const shopLong = "153.021072";
+// Test Case 2: London Coffee Shop
+// var shopTerm = "coffee";
+// const shopLat = "51.507351";
+// const shopLong = "-0.127758";
 
 /* GET home page. */
 router.get("/", function(req, res) {
@@ -59,45 +61,34 @@ router.get("/", function(req, res) {
         shopTerm = req.query.search;
     }
     console.log(req.query.search);
-    console.log("before yelp api endpoint");
-    const YELP_ENDPOINT =
-        // default wiki endpoint for testing
-        //"https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/2020/08/27";
-        // yelp api key 
-        `https://api.yelp.com/v3/businesses/search?term=${shopTerm}&latitude=${shopLat}&longitude=${shopLong}`;
-
-    console.log("after yelp api endpoint");
+    const GOOGLE_ENDPOINT = `https://www.googleapis.com/geolocation/v1/geolocate?key=${apiKey2}`;
 
     axios
-        .get(YELP_ENDPOINT, {
-            headers: {
-                'Authorization': `Bearer ${apiKey}`
-            }
+        .post(GOOGLE_ENDPOINT) // get user location
+        .then(response => {
+            console.log("google api response");
+            console.log(response.data);
+            const shopLat = response.data.location.lat;
+            const shopLong = response.data.location.lng;
+            console.log(shopLat, shopLong);
+            console.log("before yelp api endpoint");
+            const YELP_ENDPOINT = `https://api.yelp.com/v3/businesses/search?term=${shopTerm}&latitude=${shopLat}&longitude=${shopLong}`;
+            console.log("after yelp api endpoint");
+            axios
+                .get(YELP_ENDPOINT, {
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`
+                    }
+                })
+                .then((response) => {
+                    const allShops = response.data.businesses;
+                    // Render the home page with the list of shops
+                    res.render("index", { shops: allShops });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         })
-        .then((response) => {
-            // const { data } = response;
-            // console.log(response.data);
-            // const allArticles = data.items[0].articles;
-            const allShops = response.data.businesses;
-            //console.log(allShops);
-
-
-            // We only want the top 10 articles
-            // Let's also remove the first two articles as they are always the Home & Search pages
-            res.render("index", { shops: allShops });
-        })
-        .catch((error) => {
-            console.log(error);
-        });
 });
-
-/* POST */
-// router.post("/", function(req, res) {
-//     // res.send(JSON.stringify(req.body));
-//     // res.redirect('/');
-//     const shopInputName = req.body.search;
-//     console.log(shopInputName);
-//     console.log("inside index.js");
-// });
 
 module.exports = router;
